@@ -40,7 +40,7 @@ const Layout = ({ children, title = 'Smart Ping' }: LayoutProps) => {
                 <FaQuestionCircle className="mr-1" /> FAQ
               </button>
               <a 
-                href="https://github.com" 
+                href="https://github.com/manni2000/Smart-Ping-AI-Powered-Update-Feed-bootstrapped" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium flex items-center"
