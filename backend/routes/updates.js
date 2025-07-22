@@ -3,35 +3,12 @@ const router = express.Router();
 const Update = require('../models/Update');
 
 // @route   GET api/updates
-// @desc    Get all updates with pagination
+// @desc    Get all updates
 // @access  Public
 router.get('/', async (req, res) => {
   try {
-    // Get pagination parameters from query string
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 20;
-    const skip = (page - 1) * limit;
-    
-    // Get total count for pagination info
-    const total = await Update.countDocuments();
-    
-    // Execute query with pagination, sorting, and lean() for better performance
-    const updates = await Update.find()
-      .sort({ timestamp: -1 })
-      .skip(skip)
-      .limit(limit)
-      .lean();
-    
-    // Return paginated results with metadata
-    res.json({
-      updates,
-      pagination: {
-        total,
-        page,
-        limit,
-        pages: Math.ceil(total / limit)
-      }
-    });
+    const updates = await Update.find().sort({ timestamp: -1 });
+    res.json(updates);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -39,7 +16,7 @@ router.get('/', async (req, res) => {
 });
 
 // @route   GET api/updates/search
-// @desc    Search updates by keyword with pagination
+// @desc    Search updates by keyword
 // @access  Public
 router.get('/search', async (req, res) => {
   const { keyword } = req.query;
@@ -49,40 +26,15 @@ router.get('/search', async (req, res) => {
   }
 
   try {
-    // Get pagination parameters from query string
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 20;
-    const skip = (page - 1) * limit;
-    
-    // Create search query
-    const searchQuery = {
+    const updates = await Update.find({
       $or: [
         { title: { $regex: keyword, $options: 'i' } },
         { content: { $regex: keyword, $options: 'i' } },
         { user: { $regex: keyword, $options: 'i' } }
       ]
-    };
+    }).sort({ timestamp: -1 });
     
-    // Get total count for pagination info
-    const total = await Update.countDocuments(searchQuery);
-    
-    // Execute query with pagination, sorting, and lean() for better performance
-    const updates = await Update.find(searchQuery)
-      .sort({ timestamp: -1 })
-      .skip(skip)
-      .limit(limit)
-      .lean();
-    
-    // Return paginated results with metadata
-    res.json({
-      updates,
-      pagination: {
-        total,
-        page,
-        limit,
-        pages: Math.ceil(total / limit)
-      }
-    });
+    res.json(updates);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
