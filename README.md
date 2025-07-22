@@ -113,3 +113,8 @@ npm run dev
 
 - `POST /api/post` - Create a new update
 - `GET /api/summary` - Get AI-generated summary
+
+### Preview
+
+<img width="1920" height="1300" alt="image" src="https://github.com/user-attachments/assets/2a42ca18-b8e4-4f12-9382-f0b195e16115" />
+
