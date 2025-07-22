@@ -16,6 +16,18 @@ interface Update {
   timestamp: string;
 }
 
+interface Pagination {
+  total: number;
+  page: number;
+  limit: number;
+  pages: number;
+}
+
+interface UpdatesResponse {
+  updates: Update[];
+  pagination: Pagination;
+}
+
 interface Summary {
   summary: string;
   updateCount: number;
@@ -24,6 +36,8 @@ interface Summary {
 export default function Home() {
   // State
   const [updates, setUpdates] = useState<Update[]>([]);
+  const [pagination, setPagination] = useState<Pagination | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [summary, setSummary] = useState<Summary | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [summaryLoading, setSummaryLoading] = useState<boolean>(false);
@@ -42,16 +56,28 @@ export default function Home() {
     fetchSummary();
   }, []);
 
-  // Fetch all updates
-  const fetchUpdates = async () => {
+  // Fetch updates with pagination
+  const fetchUpdates = async (page = 1) => {
     setLoading(true);
     try {
-      const res = await axios.get(getApiUrl('/api/updates'));
-      setUpdates(res.data);
+      const res = await axios.get(getApiUrl(`/api/updates?page=${page}&limit=10`));
+      const data = res.data as UpdatesResponse;
+      setUpdates(data.updates);
+      setPagination(data.pagination);
+      setCurrentPage(page);
     } catch (error) {
       console.error('Error fetching updates:', error);
     } finally {
       setLoading(false);
+    }
+  };
+  
+  // Handle page change
+  const handlePageChange = (page: number) => {
+    if (searchTerm) {
+      handleSearch(searchTerm, page);
+    } else {
+      fetchUpdates(page);
     }
   };
 
@@ -88,7 +114,8 @@ export default function Home() {
     try {
       await axios.post(getApiUrl('/api/updates'), data);
       setShowForm(false);
-      fetchUpdates();
+      // Reset to first page after creating a new update
+      fetchUpdates(1);
       fetchSummary();
     } catch (error) {
       console.error('Error creating update:', error);
@@ -108,7 +135,8 @@ export default function Home() {
     setLoading(true);
     try {
       await axios.put(getApiUrl(`/api/updates/${id}`), data);
-      fetchUpdates();
+      // Reset to first page after editing
+      fetchUpdates(1);
       fetchSummary();
     } catch (error) {
       console.error('Error updating post:', error);
@@ -123,7 +151,8 @@ export default function Home() {
     setLoading(true);
     try {
       await axios.delete(getApiUrl(`/api/updates/${id}`));
-      fetchUpdates();
+      // Reset to first page after deleting
+      fetchUpdates(1);
       fetchSummary();
     } catch (error) {
       console.error('Error deleting post:', error);
@@ -133,17 +162,20 @@ export default function Home() {
     }
   };
 
-  // Handle search
-  const handleSearch = async (term: string) => {
+  // Handle search with pagination
+  const handleSearch = async (term: string, page = 1) => {
     if (!term) {
-      fetchUpdates();
+      fetchUpdates(page);
       return;
     }
     
     setLoading(true);
     try {
-      const res = await axios.get(getApiUrl(`/api/updates/search?keyword=${term}`));
-      setUpdates(res.data);
+      const res = await axios.get(getApiUrl(`/api/updates/search?keyword=${term}&page=${page}&limit=10`));
+      const data = res.data as UpdatesResponse;
+      setUpdates(data.updates);
+      setPagination(data.pagination);
+      setCurrentPage(page);
     } catch (error) {
       console.error('Error searching updates:', error);
     } finally {
@@ -229,20 +261,69 @@ export default function Home() {
               <FaSpinner className="animate-spin text-blue-500 text-2xl" />
             </div>
           ) : updates.length > 0 ? (
-            <div className="space-y-4">
-              {updates.map((update) => (
-                <UpdateItem
-                  key={update._id}
-                  id={update._id}
-                  user={update.user}
-                  title={update.title}
-                  content={update.content}
-                  timestamp={update.timestamp}
-                  onDelete={handleDelete}
-                  onEdit={handleEdit}
-                />
-              ))}
-            </div>
+            <>
+              <div className="space-y-4">
+                {updates.map((update) => (
+                  <UpdateItem
+                    key={update._id}
+                    id={update._id}
+                    user={update.user}
+                    title={update.title}
+                    content={update.content}
+                    timestamp={update.timestamp}
+                    onDelete={handleDelete}
+                    onEdit={handleEdit}
+                  />
+                ))}
+              </div>
+              
+              {/* Pagination Controls */}
+              {pagination && pagination.pages > 1 && (
+                <div className="flex justify-center mt-6 space-x-2">
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className={`px-3 py-1 rounded ${currentPage === 1 ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-blue-100 text-blue-700 hover:bg-blue-200'}`}
+                  >
+                    Previous
+                  </button>
+                  
+                  <div className="flex space-x-1">
+                    {Array.from({ length: Math.min(5, pagination.pages) }, (_, i) => {
+                      // Show pages around current page
+                      let pageNum;
+                      if (pagination.pages <= 5) {
+                        pageNum = i + 1;
+                      } else if (currentPage <= 3) {
+                        pageNum = i + 1;
+                      } else if (currentPage >= pagination.pages - 2) {
+                        pageNum = pagination.pages - 4 + i;
+                      } else {
+                        pageNum = currentPage - 2 + i;
+                      }
+                      
+                      return (
+                        <button
+                          key={pageNum}
+                          onClick={() => handlePageChange(pageNum)}
+                          className={`w-8 h-8 rounded flex items-center justify-center ${currentPage === pageNum ? 'bg-blue-500 text-white' : 'bg-blue-100 text-blue-700 hover:bg-blue-200'}`}
+                        >
+                          {pageNum}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === pagination.pages}
+                    className={`px-3 py-1 rounded ${currentPage === pagination.pages ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-blue-100 text-blue-700 hover:bg-blue-200'}`}
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
+            </>
           ) : (
             <div className="text-center py-8 text-gray-500">
               <p className="mb-2">No updates found.</p>
@@ -252,7 +333,7 @@ export default function Home() {
                   <button 
                     onClick={() => {
                       setSearchTerm('');
-                      fetchUpdates();
+                      fetchUpdates(1);
                     }}
                     className="text-blue-500 hover:text-blue-700 ml-1"
                   >
