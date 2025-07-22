@@ -50,26 +50,25 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <div className="relative rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 bg-white overflow-hidden border border-gray-200">
-      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-        <FaSearch className="h-5 w-5 text-blue-500" aria-hidden="true" />
+      <div className="absolute inset-y-0 left-0 pl-2 sm:pl-4 flex items-center pointer-events-none">
+        <FaSearch className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500" aria-hidden="true" />
       </div>
       <input
         type="text"
         value={localValue}
         onChange={handleChange}
-        className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-12 pr-12 py-3 text-gray-700 bg-white border-0 focus:outline-none"
+        className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-8 sm:pl-12 pr-8 sm:pr-12 py-2 sm:py-3 text-sm sm:text-base text-gray-700 bg-white border-0 focus:outline-none"
         placeholder={placeholder}
-        style={{ fontSize: '1rem' }}
       />
       {localValue && (
-        <div className="absolute inset-y-0 right-0 pr-4 flex items-center">
+        <div className="absolute inset-y-0 right-0 pr-2 sm:pr-4 flex items-center">
           <button
             type="button"
             onClick={handleClear}
             className="text-gray-400 hover:text-red-500 focus:outline-none transition-colors duration-200 p-1 rounded-full hover:bg-gray-100"
             aria-label="Clear search"
           >
-            <FaTimes className="h-5 w-5" />
+            <FaTimes className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>
         </div>
       )}

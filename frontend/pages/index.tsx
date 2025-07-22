@@ -153,60 +153,60 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 md:py-8 max-w-4xl">
         
         {/* Daily Summary Section */}
-        <div className="bg-gradient-to-r from-indigo-50 to-blue-50 p-6 rounded-lg mb-8 border-l-4 border-indigo-500 shadow-sm">
-          <h2 className="text-xl font-semibold mb-2 text-indigo-700">Daily Summary</h2>
+        <div className="bg-gradient-to-r from-indigo-50 to-blue-50 p-3 sm:p-4 md:p-6 rounded-lg mb-4 sm:mb-6 md:mb-8 border-l-4 border-indigo-500 shadow-sm">
+          <h2 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2 text-indigo-700">Daily Summary</h2>
           {summaryLoading ? (
-            <div className="flex justify-center py-4">
-              <FaSpinner className="animate-spin text-indigo-500 text-xl" />
+            <div className="flex justify-center py-3 sm:py-4">
+              <FaSpinner className="animate-spin text-indigo-500 text-lg sm:text-xl" />
             </div>
           ) : summary ? (
             <div>
-              <p className="mb-2 text-gray-800">{summary.summary}</p>
-              <p className="text-sm text-gray-600">Based on {summary.updateCount} updates from the last 24 hours (Powered by OpenRouter)</p>
+              <p className="mb-1 sm:mb-2 text-sm sm:text-base text-gray-800">{summary.summary}</p>
+              <p className="text-xs sm:text-sm text-gray-600">Based on {summary.updateCount} updates from the last 24 hours (Powered by OpenRouter)</p>
             </div>
           ) : (
-            <p className="text-gray-600 italic">No updates available for summary in the last 24 hours.</p>
+            <p className="text-sm sm:text-base text-gray-600 italic">No updates available for summary in the last 24 hours.</p>
           )}
         </div>
         
-        {/* Search Bar */}
-        <div className="mb-6">
-          <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
-            <h2 className="text-lg font-semibold mb-3 text-gray-800 flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
-              </svg>
-              Find Updates
-            </h2>
-            <SearchBar 
-              value={searchTerm} 
-              onChange={setSearchTerm} 
-              onSearch={handleSearch}
-              placeholder="Search updates by title, content or user..."
-              debounceTime={500}
-            />
+        {/* Search and Post Toggle Section */}
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6">
+          <div className="w-full sm:w-2/3 mb-3 sm:mb-0 sm:mr-4">
+            <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
+              <h2 className="text-lg font-semibold mb-3 text-gray-800 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+                </svg>
+                Find Updates
+              </h2>
+              <SearchBar 
+                value={searchTerm} 
+                onChange={setSearchTerm} 
+                onSearch={handleSearch}
+                placeholder="Search updates by title, content or user..."
+                debounceTime={500}
+              />
+            </div>
           </div>
-        </div>
-        
-        {/* Post Update Toggle Button */}
-        <div className="mb-6">
-          <button
-            onClick={() => setShowForm(!showForm)}
-            className="flex items-center justify-center w-full md:w-auto px-5 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-md font-medium"
-          >
-            {showForm ? (
-              <>
-                <FaMinus className="mr-2" /> Hide Update Form
-              </>
-            ) : (
-              <>
-                <FaPlus className="mr-2" /> Post New Update
-              </>
-            )}
-          </button>
+          <div className="w-full sm:w-1/3 flex justify-center sm:justify-end">
+            <button
+              onClick={() => setShowForm(!showForm)}
+              className="flex items-center justify-center w-full sm:w-auto px-5 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-md font-medium"
+            >
+              {showForm ? (
+                <>
+                  <FaMinus className="mr-1 sm:mr-2 text-sm sm:text-base" /> <span className="text-sm sm:text-base">Hide Update Form</span>
+                </>
+              ) : (
+                <>
+                  <FaPlus className="mr-1 sm:mr-2 text-sm sm:text-base" /> <span className="text-sm sm:text-base">Post New Update</span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
         
         {/* Post Update Form */}
