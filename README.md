@@ -48,6 +48,9 @@ Daily Digest Generator endpoint `/summary` fetches last 24h posts, generates a s
 }
 ```
 
+### Disclaimer: Using free OpenRouter API key for local development—summary and update feed may not load. Download the code from GitHub and run locally for full functionality.
+
+
 ## Getting Started
 
 ### Prerequisites
