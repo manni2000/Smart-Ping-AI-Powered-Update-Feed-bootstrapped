@@ -41,7 +41,7 @@ Daily Digest Generator endpoint `/summary` fetches last 24h posts, generates a s
 
 ```json
 {
-  "user": "Adesh",
+  "user": "Manish",
   "title": "UI Fixes",
   "content": "Completed UI fixes for dashboard, started working on backend APIs.",
   "timestamp": "2025-07-22T12:45:00Z"
