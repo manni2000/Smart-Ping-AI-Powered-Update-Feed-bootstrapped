@@ -1,18 +1,8 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/next"
-    }
-  ],
   "rewrites": [
     {
-      "source": "/api/:path*",
-      "destination": "https://smart-ping-backend.vercel.app/api/:path*"
+      "source": "/(.*)",
+      "destination": "/"
     }
-  ],
-  "env": {
-    "NEXT_PUBLIC_API_URL": "https://smart-ping-backend.vercel.app"
-  }
+  ]
 }
