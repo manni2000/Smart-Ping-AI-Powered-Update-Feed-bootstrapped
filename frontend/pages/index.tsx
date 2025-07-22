@@ -5,6 +5,7 @@ import { FaSpinner, FaPlus, FaMinus } from 'react-icons/fa';
 import UpdateItem from '../components/UpdateItem';
 import SearchBar from '../components/SearchBar';
 import UpdateForm from '../components/UpdateForm';
+import { getApiUrl } from '../utils/apiConfig';
 
 // Types
 interface Update {
@@ -45,7 +46,7 @@ export default function Home() {
   const fetchUpdates = async () => {
     setLoading(true);
     try {
-      const res = await axios.get('http://localhost:5000/api/updates');
+      const res = await axios.get(getApiUrl('/api/updates'));
       setUpdates(res.data);
     } catch (error) {
       console.error('Error fetching updates:', error);
@@ -58,7 +59,7 @@ export default function Home() {
   const fetchSummary = async () => {
     setSummaryLoading(true);
     try {
-      const res = await axios.get('http://localhost:5000/api/summary');
+      const res = await axios.get(getApiUrl('/api/summary'));
       setSummary(res.data);
     } catch (error) {
       console.error('Error fetching summary:', error);
@@ -85,7 +86,7 @@ export default function Home() {
     
     setFormSubmitting(true);
     try {
-      await axios.post('http://localhost:5000/api/updates', data);
+      await axios.post(getApiUrl('/api/updates'), data);
       setShowForm(false);
       fetchUpdates();
       fetchSummary();
@@ -106,7 +107,7 @@ export default function Home() {
     
     setLoading(true);
     try {
-      await axios.put(`http://localhost:5000/api/updates/${id}`, data);
+      await axios.put(getApiUrl(`/api/updates/${id}`), data);
       fetchUpdates();
       fetchSummary();
     } catch (error) {
@@ -121,7 +122,7 @@ export default function Home() {
   const handleDelete = async (id: string) => {
     setLoading(true);
     try {
-      await axios.delete(`http://localhost:5000/api/updates/${id}`);
+      await axios.delete(getApiUrl(`/api/updates/${id}`));
       fetchUpdates();
       fetchSummary();
     } catch (error) {
@@ -141,7 +142,7 @@ export default function Home() {
     
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:5000/api/updates/search?keyword=${term}`);
+      const res = await axios.get(getApiUrl(`/api/updates/search?keyword=${term}`));
       setUpdates(res.data);
     } catch (error) {
       console.error('Error searching updates:', error);

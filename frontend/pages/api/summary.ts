@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
+import { getApiUrl } from '../../utils/apiConfig';
 
 type Data = {
   success: boolean;
@@ -19,7 +20,7 @@ export default async function handler(
 
   try {
     // Get summary from backend API (now using OpenRouter)
-    const response = await axios.get('http://localhost:5000/api/summary');
+    const response = await axios.get(getApiUrl('/api/summary'));
     
     // Return the summary data
     return res.status(200).json({ 

@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
+import { getApiUrl } from '../../utils/apiConfig';
 
 type Data = {
   success: boolean;
@@ -25,7 +26,7 @@ export default async function handler(
     }
 
     // Forward the request to the backend API
-    const response = await axios.post('http://localhost:5000/api/updates', {
+    const response = await axios.post(getApiUrl('/api/updates'), {
       user,
       title,
       content
