@@ -80,7 +80,7 @@ const Layout = ({ children, title = 'Smart Ping' }: LayoutProps) => {
               </div>
               <div>
                 <h3 className="font-semibold text-gray-800">Is authentication required?</h3>
-                <p className="mt-1 text-gray-600">No. The POC is intentionally open for simplicity. All updates are anonymous. Future versions may support user authentication and team isolation.</p>
+                <p className="mt-1 text-gray-600">No. The POC is intentionally open for simplicity. Future versions may support user authentication and team isolation.</p>
               </div>
               <div>
                 <h3 className="font-semibold text-gray-800">How often are summaries generated?</h3>
@@ -96,7 +96,7 @@ const Layout = ({ children, title = 'Smart Ping' }: LayoutProps) => {
               </div>
                <div>
                 <h3 className="font-semibold text-gray-800">Do I need an API key?</h3>
-                <p className="mt-1 text-gray-600">Yes. For production use, provide a valid OpenRouter (or OpenAI) API key. Local development can use the free tier, but summaries may not generate reliably.</p>
+                <p className="mt-1 text-gray-600">Yes. For production use any API key to generate summaries.</p>
               </div>
             </div>
             <div className="px-3 sm:px-6 py-3 sm:py-4 border-t flex justify-end">
