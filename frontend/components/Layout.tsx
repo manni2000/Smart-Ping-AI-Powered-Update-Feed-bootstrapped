@@ -1,5 +1,3 @@
-// Disclaimer: Using free OpenRouter API key for local development – update feed and summaries may not load. For full functionality, download from GitHub and run locally.
-
 import React, { ReactNode, useState } from 'react';
 import Head from 'next/head';
 import { FaBell, FaGithub, FaQuestionCircle, FaTimes } from 'react-icons/fa';
@@ -34,10 +32,7 @@ const Layout = ({ children, title = 'Smart Ping' }: LayoutProps) => {
               <h1 className="text-xl font-bold text-gray-900 sm:text-2xl md:text-3xl">{title}</h1>
             </div>
             <nav className="flex flex-wrap justify-center space-x-2 sm:space-x-4">
-              <a 
-                href="#" 
-                className="text-gray-500 hover:text-gray-700 px-2 sm:px-3 py-2 rounded-md text-xs sm:text-sm font-medium"
-              >
+              <a href="#" className="text-gray-500 hover:text-gray-700 px-2 sm:px-3 py-2 rounded-md text-xs sm:text-sm font-medium">
                 Dashboard
               </a>
               <button 
@@ -79,7 +74,30 @@ const Layout = ({ children, title = 'Smart Ping' }: LayoutProps) => {
               </button>
             </div>
             <div className="p-3 sm:p-6 space-y-4 sm:space-y-6">
-              {/* FAQ content omitted for brevity */}
+              <div>
+                <h3 className="font-semibold text-gray-800">What is Smart Ping?</h3>
+                <p className="mt-1 text-gray-600">Smart Ping is an AI-powered update feed platform that lets team members post daily progress and automatically generates a concise summary each day, improving visibility and reducing noise.</p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-800">Is authentication required?</h3>
+                <p className="mt-1 text-gray-600">No. The POC is intentionally open for simplicity. All updates are anonymous. Future versions may support user authentication and team isolation.</p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-800">How often are summaries generated?</h3>
+                <p className="mt-1 text-gray-600">Summaries run once daily at 23:55 UTC by a scheduled cron job. You can adjust the schedule in <code>cron.js</code> or your deployment platform.</p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-800">Can I customize the summary length?</h3>
+                <p className="mt-1 text-gray-600">Yes. Modify the prompt in the AI client (<code>utils/aiClient.js</code>) to adjust word limits or summary style.</p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-800">Why do we need Smart Ping in modern days?</h3>
+                <p className="mt-1 text-gray-600">In today’s distributed and asynchronous work environments, teams face information overload and fragmented communication across multiple tools. Smart Ping centralizes daily updates and uses AI summarization to reduce noise, improve visibility, and ensure key insights are easily accessible—helping teams stay aligned, make faster decisions, and maintain productivity.</p>
+              </div>
+               <div>
+                <h3 className="font-semibold text-gray-800">Do I need an API key?</h3>
+                <p className="mt-1 text-gray-600">Yes. For production use, provide a valid OpenRouter (or OpenAI) API key. Local development can use the free tier, but summaries may not generate reliably.</p>
+              </div>
             </div>
             <div className="px-3 sm:px-6 py-3 sm:py-4 border-t flex justify-end">
               <button
@@ -100,15 +118,9 @@ const Layout = ({ children, title = 'Smart Ping' }: LayoutProps) => {
               &copy; {new Date().getFullYear()} Smart Ping. All rights reserved.
             </p>
             <div className="flex flex-wrap justify-center space-x-3 sm:space-x-6">
-              <a href="#" className="text-gray-400 hover:text-gray-500 text-xs sm:text-sm">
-                Privacy Policy
-              </a>
-              <a href="#" className="text-gray-400 hover:text-gray-500 text-xs sm:text-sm">
-                Terms of Service
-              </a>
-              <a href="#" className="text-gray-400 hover:text-gray-500 text-xs sm:text-sm">
-                Contact
-              </a>
+              <a href="#" className="text-gray-400 hover:text-gray-500 text-xs sm:text-sm">Privacy Policy</a>
+              <a href="#" className="text-gray-400 hover:text-gray-500 text-xs sm:text-sm">Terms of Service</a>
+              <a href="#" className="text-gray-400 hover:text-gray-500 text-xs sm:text-sm">Contact</a>
             </div>
           </div>
         </div>
